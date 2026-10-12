@@ -109,6 +109,7 @@ h2 {
 }
 
 .button-row {
+  width: 100%;
   justify-content: flex-end;
 }
 
@@ -118,6 +119,7 @@ h2 {
 .stats-panel > button {
   width: auto;
   min-width: 150px;
+  align-self: flex-end;
 }
 
 .primary-btn,
