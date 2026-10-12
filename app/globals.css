@@ -108,6 +108,10 @@ h2 {
   justify-content: center;
 }
 
+.button-row {
+  justify-content: flex-end;
+}
+
 .primary-btn,
 .secondary-btn,
 .warning-btn {
@@ -195,11 +199,16 @@ input[type="number"] {
 }
 
 .game-header,
-.stats-header,
-.modal-header {
+.stats-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 16px;
+}
+
+.modal-header {
+  display: flex;
+  flex-direction: column;
   gap: 16px;
 }
 
@@ -308,10 +317,13 @@ th {
   border-radius: 20px;
   padding: 22px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .modal-meta {
-  margin: 8px 0 16px;
+  margin: 0;
   color: #537458;
 }
 
@@ -322,6 +334,7 @@ th {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  flex: 1;
 }
 
 .player-list li {
@@ -345,10 +358,13 @@ th {
   }
 
   .game-header,
-  .stats-header,
-  .modal-header {
+  .stats-header {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .button-row {
+    justify-content: flex-end;
   }
 
   .names-grid {
