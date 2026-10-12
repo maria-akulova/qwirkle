@@ -160,59 +160,63 @@ export default function HomePage() {
 
         {screen === 'setup' && (
           <div className="setup-panel">
-            <h2>Game setup</h2>
+            <div>
+              <h2>Game setup</h2>
 
-            <div className="field-group">
-              <label htmlFor="playerCount">How many players are there?</label>
-              <input
-                id="playerCount"
-                type="number"
-                min={2}
-                max={10}
-                value={playerCount}
-                onChange={(event) => setPlayerCount(Number(event.target.value) || 2)}
-              />
-            </div>
-
-            <div className="field-group">
-              <p>Would you like to enter names or generate random names?</p>
-              <div className="choice-row">
-                <label>
-                  <input
-                    type="radio"
-                    checked={entryMode === 'random'}
-                    onChange={() => setEntryMode('random')}
-                  />
-                  Generate names
-                </label>
-
-                <label>
-                  <input
-                    type="radio"
-                    checked={entryMode === 'custom'}
-                    onChange={() => setEntryMode('custom')}
-                  />
-                  Enter names
-                </label>
+              <div className="field-group">
+                <label htmlFor="playerCount">How many players are there?</label>
+                <input
+                  id="playerCount"
+                  type="number"
+                  min={2}
+                  max={10}
+                  value={playerCount}
+                  onChange={(event) => setPlayerCount(Number(event.target.value) || 2)}
+                  onFocus={(event) => event.target.select()}
+                />
               </div>
-            </div>
 
-            {entryMode === 'custom' && (
-              <div className="names-grid">
-                {Array.from({ length: playerCount }, (_, index) => (
-                  <div key={index} className="field-group small-field">
-                    <label htmlFor={`player-${index}`}>Player {index + 1}</label>
+              <div className="field-group">
+                <p>Would you like to enter names or generate random names?</p>
+                <div className="choice-row">
+                  <label>
                     <input
-                      id={`player-${index}`}
-                      type="text"
-                      value={customNames[index] || ''}
-                      onChange={(event) => handleCustomNameChange(index, event.target.value)}
-                      placeholder={`Player ${index + 1}`}
+                      type="radio"
+                      checked={entryMode === 'random'}
+                      onChange={() => setEntryMode('random')}
                     />
-                  </div>
-                ))}
+                    Generate names
+                  </label>
+
+                  <label>
+                    <input
+                      type="radio"
+                      checked={entryMode === 'custom'}
+                      onChange={() => setEntryMode('custom')}
+                    />
+                    Enter names
+                  </label>
+                </div>
               </div>
-            )}
+
+              {entryMode === 'custom' && (
+                <div className="names-grid">
+                  {Array.from({ length: playerCount }, (_, index) => (
+                    <div key={index} className="field-group small-field">
+                      <label htmlFor={`player-${index}`}>Player {index + 1}</label>
+                      <input
+                        id={`player-${index}`}
+                        type="text"
+                        value={customNames[index] || ''}
+                        onChange={(event) => handleCustomNameChange(index, event.target.value)}
+                        placeholder={`Player ${index + 1}`}
+                        maxLength={20}
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
 
             <div className="button-row">
               <button className="secondary-btn" onClick={() => setScreen('home')}>Back</button>
@@ -223,118 +227,123 @@ export default function HomePage() {
 
         {screen === 'game' && (
           <div className="game-panel">
-            <div className="game-header">
-              <h2>Scoreboard</h2>
-              <button className="warning-btn" onClick={endGame}>End of game</button>
-            </div>
+            <div>
+              <div className="game-header">
+                <h2>Scoreboard</h2>
+                <button className="warning-btn" onClick={endGame}>End of game</button>
+              </div>
 
-            <div className="player-grid">
-              {playerGrid.map((player) => {
-                const isSelected = selectedPlayerId === player.id;
-                const scoreValue = Number(selectedScores[player.id] ?? 0);
+              <div className="player-grid">
+                {playerGrid.map((player) => {
+                  const isSelected = selectedPlayerId === player.id;
+                  const scoreValue = Number(selectedScores[player.id] ?? 0);
 
-                return (
-                  <div
-                    key={player.id}
-                    className={`player-card ${isSelected ? 'selected' : ''}`}
-                    onClick={() => setSelectedPlayerId(player.id)}
-                    role="button"
-                    tabIndex={0}
-                    onKeyDown={(event) => {
-                      if (event.key === 'Enter' || event.key === ' ') {
-                        setSelectedPlayerId(player.id);
-                      }
-                    }}
-                  >
-                    <div className="card-header">
-                      <h3>{player.name}</h3>
-                      <span className="score-badge">{player.score}</span>
-                    </div>
-
-                    <label className="score-field">
-                      <span>Score</span>
-                      <select
-                        value={scoreValue}
-                        onChange={(event) => updateSelectedScore(player.id, Number(event.target.value))}
-                        onClick={(event) => event.stopPropagation()}
-                      >
-                        {Array.from({ length: 21 }, (_, index) => (
-                          <option key={index} value={index}>
-                            {index}
-                          </option>
-                        ))}
-                      </select>
-                    </label>
-
-                    <button
-                      className="primary-btn small-btn"
-                      disabled={scoreValue === 0}
-                      onClick={(event) => {
-                        event.stopPropagation();
-                        addScoreToPlayer(player.id);
+                  return (
+                    <div
+                      key={player.id}
+                      className={`player-card ${isSelected ? 'selected' : ''}`}
+                      onClick={() => setSelectedPlayerId(player.id)}
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={(event) => {
+                        if (event.key === 'Enter' || event.key === ' ') {
+                          setSelectedPlayerId(player.id);
+                        }
                       }}
                     >
-                      Add scores
-                    </button>
-                  </div>
-                );
-              })}
+                      <div className="card-header">
+                        <h3>{player.name}</h3>
+                        <span className="score-badge">{player.score}</span>
+                      </div>
+
+                      <label className="score-field">
+                        <span>Score</span>
+                        <select
+                          value={scoreValue}
+                          onChange={(event) => updateSelectedScore(player.id, Number(event.target.value))}
+                          onClick={(event) => event.stopPropagation()}
+                        >
+                          {Array.from({ length: 21 }, (_, index) => (
+                            <option key={index} value={index}>
+                              {index}
+                            </option>
+                          ))}
+                        </select>
+                      </label>
+
+                      <button
+                        className="primary-btn small-btn"
+                        disabled={scoreValue === 0}
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          addScoreToPlayer(player.id);
+                        }}
+                      >
+                        Add scores
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </div>
         )}
 
         {screen === 'stats' && (
           <div className="stats-panel">
-            <div className="stats-header">
-              <h2>Game statistics</h2>
-              <button className="secondary-btn" onClick={() => setScreen('home')}>Back</button>
-            </div>
-
-            <div className="table-wrapper">
-              <table>
-                <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>Winner</th>
-                    <th>Winner score</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {games.map((game) => (
-                    <tr key={game.id} onClick={() => setSelectedGame(game)} className="table-row">
-                      <td>{game.id.slice(0, 8)}</td>
-                      <td>{game.winner}</td>
-                      <td>{game.winnerScore}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-
-            {selectedGame && (
-              <div className="modal-backdrop" onClick={() => setSelectedGame(null)}>
-                <div className="modal" onClick={(event) => event.stopPropagation()}>
-                  <div className="modal-header">
-                    <h3>Game {selectedGame.id.slice(0, 8)}</h3>
-                    <button className="secondary-btn small-btn" onClick={() => setSelectedGame(null)}>Close</button>
-                  </div>
-
-                  <p className="modal-meta">Started: {formatDate(selectedGame.startedAt)}</p>
-
-                  <ul className="player-list">
-                    {selectedGame.players.map((player) => {
-                      const isWinner = player.name === selectedGame.winner;
-                      return (
-                        <li key={`${selectedGame.id}-${player.name}`} className={isWinner ? 'winner-entry' : ''}>
-                          <span>{player.name}</span>
-                          <strong>{player.score}</strong>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
+            <div>
+              <div className="stats-header">
+                <h2>Game statistics</h2>
               </div>
-            )}
+
+              <div className="table-wrapper">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Winner</th>
+                      <th>Winner score</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {games.map((game) => (
+                      <tr key={game.id} onClick={() => setSelectedGame(game)} className="table-row">
+                        <td>{game.id.slice(0, 8)}</td>
+                        <td>{game.winner}</td>
+                        <td>{game.winnerScore}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              {selectedGame && (
+                <div className="modal-backdrop" onClick={() => setSelectedGame(null)}>
+                  <div className="modal" onClick={(event) => event.stopPropagation()}>
+                    <div className="modal-header">
+                      <h3>Game {selectedGame.id.slice(0, 8)}</h3>
+                      <button className="secondary-btn small-btn" onClick={() => setSelectedGame(null)}>Close</button>
+                    </div>
+
+                    <p className="modal-meta">Started: {formatDate(selectedGame.startedAt)}</p>
+
+                    <ul className="player-list">
+                      {selectedGame.players.map((player) => {
+                        const isWinner = player.name === selectedGame.winner;
+                        return (
+                          <li key={`${selectedGame.id}-${player.name}`} className={isWinner ? 'winner-entry' : ''}>
+                            <span>{player.name}</span>
+                            <strong>{player.score}</strong>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <button className="secondary-btn" onClick={() => setScreen('home')}>Back</button>
           </div>
         )}
       </div>
