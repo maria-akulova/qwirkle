@@ -9,7 +9,7 @@ A Next.js web app for tracking scores in the Qwirkle board game.
 - Automatic score total tracking
 - End-of-game summary with winner detection
 - Statistics page with winner table and player details
-- Persistent storage using Vercel KV (Redis)
+- Persistent storage using Upstash Redis
 
 ## Local Development
 
@@ -27,29 +27,29 @@ Open http://localhost:3000 to view the app.
 3. Click "Add New Project".
 4. Import the `maria-akulova/qwirkle` repository.
 5. Keep the default Next.js settings.
-6. In the Vercel dashboard, create a Vercel Redis / KV datastore.
-7. Link the KV database to the project.
+6. In the Vercel dashboard, go to "Storage" → "Create" → Add "Upstash Redis".
+7. Link the Redis database to the project.
 8. Click "Deploy".
 
 After deployment, the app will be live with a Vercel URL.
 
 ## Required Environment Variables
 
-When you add Vercel KV, Vercel will provide the required environment variables automatically:
+When you add Upstash Redis integration, Vercel will provide these environment variables automatically:
 
-- `KV_REST_API_URL`
-- `KV_REST_API_TOKEN`
+- `UPSTASH_REDIS_REST_URL`
+- `UPSTASH_REDIS_REST_TOKEN`
 
-## Local Setup Without Vercel KV
+## Local Setup Without Redis
 
-If you want to run locally without Redis, the API route has a safe in-memory fallback for development. It does not persist across restarts, but it allows the app to work during local testing.
+If you want to run locally without connecting to Redis, the API route has a safe in-memory fallback for development. Games will not persist across restarts, but the app works for local testing.
 
 ## Tech Stack
 
 - Next.js 14
 - React 18
 - TypeScript
-- Vercel KV (Redis)
+- Upstash Redis
 
 ## License
 
