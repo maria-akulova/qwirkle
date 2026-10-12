@@ -160,14 +160,38 @@ select {
   color: #153421;
 }
 
+input[type="number"] {
+  max-width: 80px;
+}
+
 .names-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 16px;
 }
 
 .small-field {
   min-width: 0;
+  width: 160px;
+}
+
+.small-field input {
+  max-width: 100%;
+}
+
+.setup-panel,
+.game-panel,
+.stats-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  flex: 1;
+}
+
+.setup-panel > *:last-child,
+.game-panel > *:last-child,
+.stats-panel > *:last-child {
+  margin-top: auto;
 }
 
 .game-header,
@@ -241,6 +265,7 @@ select {
   border: 1px solid #d7e7d7;
   border-radius: 18px;
   background: #f8faf8;
+  flex: 1;
 }
 
 table {
@@ -324,5 +349,13 @@ th {
   .modal-header {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .names-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .small-field {
+    width: 100%;
   }
 }
